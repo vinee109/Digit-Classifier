@@ -66,12 +66,10 @@ def euclidean_distance(vec1, vec2):
     return numpy.linalg.norm(vec1 - vec2)
 
 def classify(vector, trainingDataLabels, k):
-    # values = []
     heap = struct.BinaryHeap(k, lambda x: x[1])
     for key in trainingDataLabels:
         key_vec = numpy.array(list(key))
         dist = euclidean_distance(vector, key_vec)
-        # values.append(dist)
         heap.insert((key, dist))
     lowest_items = heap.get_items()
     
@@ -80,14 +78,12 @@ def classify(vector, trainingDataLabels, k):
         vec = item[0]
         counts[trainingDataLabels[vec]] += 1
     return determine_max(vector, counts)
-    # print sorted(values)[:k]
 
 def determine_max(vector, counts):
     max_count = max(counts)
     indices = [i for i in range(len(counts)) if counts[i] == max_count]
     return indices[0]
 
-# attempt at implementing some extra features
 def num_white_regions(vector):
     """
     Runs depth-first search to calculate the number of white regions in a particular vector
@@ -134,7 +130,7 @@ def validate(train_data_source, train_label_source, val_data_source, val_label_s
     count = 1
     for vec in val_data:
         if count % 20 == 0:
-            print 'Completed', count
+            print '\tCompleted', count
         guesses.append(classify(vec, training_labels, k))
         count += 1
     print 'Verifying...........'
@@ -180,26 +176,33 @@ def output_file(data, k):
 
 def parseCommand(args):
     from optparse import OptionParser
-    parser = OptionParser('')
+    parser = OptionParser(usageStr)
     parser.add_option('-n', '--train')
     parser.add_option('-r', '--trainLabel')
     parser.add_option('-v', '--validation')
     parser.add_option('-a', '--validationLabel')
     parser.add_option('-k', '--k')
     parser.add_option('-t', '--test')
+    parser.add_option('-g', '--guesses')
     options, junk = parser.parse_args(args)
+    if len(junk) != 0:
+        raise Exception('Command line input not understood: ' + str(otherjunk))
     return options
 
 
 def doCommand(options):
-    if options.k is None or options.train is None or options.trainLabel is None:
+    if options.k is None or options.train is None or options.trainLabel is None or options.validation is None or options.validationLabel is None:
         print 'Not enough options'
+        print usageStr
         return
     if options.test is None:
-        validate(options.train, options.trainLabel, options.validation, options.validationLabel, int(options.k), output=True)
+        validate(options.train, options.trainLabel, options.validation, options.validationLabel, int(options.k), options.guesses is not None)
     else:
         test(options.train, options.trainLabel, options.test, int(options.k))
 
+usageStr = """
+    USAGE:      python digit_classification.py <options>
+    """
 
 if __name__ == '__main__':
     doCommand(parseCommand(sys.argv[1:]))
