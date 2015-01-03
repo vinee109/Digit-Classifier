@@ -8,4 +8,4 @@ K-Nearest Neighbors algorithm.
 The input can be found in /dataset in .csv files. It is divided into *Labels.csv and *Features.csv where the ith line in labels corresponds to the ith line of features. Actual images can be found in /digitimages.
 
 An example of the input:
-
+![Input image](/digitImages/trainDigit1.png "Sample Input")
