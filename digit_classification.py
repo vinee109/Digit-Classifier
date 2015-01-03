@@ -191,7 +191,7 @@ def parseCommand(args):
 
 
 def doCommand(options):
-    if options.k is None or options.train is None or options.trainLabel is None or options.validation is None or options.validationLabel is None:
+    if options.k is None or options.train is None or options.trainLabel is None or (options.test is None and (options.validation is None or options.validationLabel is None)):
         print 'Not enough options'
         print usageStr
         return
