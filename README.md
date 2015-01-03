@@ -1,8 +1,7 @@
 Digit-Classifier
 ================
 
-This project is an implementation of a classifier that classifies images of handwritten images as they're actual number using the
-K-Nearest Neighbors algorithm.
+This project is an implementation of a classifier that classifies images of handwritten images as they're actual number using the similarity with K-Nearest Neighbors. Each set of features is represented by a vector. The metric used to measure nearest neighbors is euclidean distance between two vectors.
 
 ###Input
 The input can be found in /dataset in .csv files. It is divided into *Labels.csv and *Features.csv where the ith line in labels corresponds to the ith line of features. Actual images can be found in /digitimages. Each line represents a 28x28 image.
@@ -35,6 +34,9 @@ Sample usage to train and validate:
 Sample usage to test:  
 `python digit_classification.py -n <path to train features> -r <path to train labels> -k 5 -t <path to test features>`  
 The test features must follow the same format as the training features and validation features.
+
+### Added Feature
+I have added an extra feature along with the normalized pixel value that is the number of black contiguous regions in the image. This allows for added differentiability between (1, 2, 3, 7), (0, 4, 6, 9) and (8) because all the sets have 1, 2 and 3 contiguous regions respectively.  
 
 ###Dependencies
 NumPy, SciPy
